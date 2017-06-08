@@ -39,6 +39,10 @@
 
 -export([hexstring/1]).
 
+-export([
+  gen_rand_id/1,
+  get_unixtime/0]).
+
 %%------------------TYPE CONVERSION-------------------------------------------------------------------------------------
 %% @doc universal converter to binary
 -spec to_bin(binary()|list()|integer()|atom()|float()) -> binary().
@@ -369,3 +373,13 @@ hexstring(String) when is_list(String) ->
 
 hexstring(Binary) when is_binary(Binary) ->
   hexstring(to_str(Binary)).
+
+
+gen_rand_id(Len) ->
+  base64:encode( crypto:strong_rand_bytes(Len) ).
+
+-spec get_unixtime() -> integer().
+get_unixtime() ->
+  {Mega, Secs, _} = os:timestamp(),
+  Timestamp = Mega*1000000 + Secs,
+  Timestamp.
