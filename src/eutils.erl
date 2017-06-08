@@ -37,6 +37,8 @@
   x_www_form_urlencoded/1
 ]).
 
+-export([hexstring/1]).
+
 %%------------------TYPE CONVERSION-------------------------------------------------------------------------------------
 %% @doc universal converter to binary
 -spec to_bin(binary()|list()|integer()|atom()|float()) -> binary().
@@ -359,3 +361,11 @@ unhex(C) when C >= $0, C =< $9 -> C - $0;
 unhex(C) when C >= $A, C =< $F -> C - $A + 10;
 unhex(C) when C >= $a, C =< $f -> C - $a + 10;
 unhex(_) -> error.
+
+
+hexstring(String) when is_list(String) ->
+  lists:flatten(
+    lists:map(fun(X) -> io_lib:format("~2.16.0b", [X]) end, String));
+
+hexstring(Binary) when is_binary(Binary) ->
+  hexstring(to_str(Binary)).
