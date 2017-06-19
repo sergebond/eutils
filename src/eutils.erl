@@ -4,6 +4,7 @@
 %% CONVERTERS
 -export([
   to_bin/1,
+  to_str/1,
   to_list/1,
   to_int/1,
   to_float/1,
@@ -52,6 +53,8 @@ to_bin(X) when is_integer(X) -> integer_to_binary(X);
 to_bin(X) when is_atom(X) -> atom_to_binary(X, utf8);
 to_bin(X) when is_float(X) -> float_to_binary(X, [{decimals, 4}]).
 
+
+to_str(X) -> to_list(X).
 %% @doc universal converter to string(list)
 -spec to_list(binary()|list()|integer()|atom()|float()) -> list().
 to_list(X) when is_list(X) -> X;
