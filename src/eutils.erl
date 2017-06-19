@@ -4,7 +4,7 @@
 %% CONVERTERS
 -export([
   to_bin/1,
-  to_str/1,
+  to_list/1,
   to_int/1,
   to_float/1,
   to_atom/1,
@@ -53,12 +53,12 @@ to_bin(X) when is_atom(X) -> atom_to_binary(X, utf8);
 to_bin(X) when is_float(X) -> float_to_binary(X, [{decimals, 4}]).
 
 %% @doc universal converter to string(list)
--spec to_str(binary()|list()|integer()|atom()|float()) -> list().
-to_str(X) when is_list(X) -> X;
-to_str(X) when is_binary(X) -> binary_to_list(X);
-to_str(X) when is_integer(X) -> integer_to_list(X);
-to_str(X) when is_atom(X) -> atom_to_list(X);
-to_str(X) when is_float(X) -> float_to_list(X,[{decimals, 4}]).
+-spec to_list(binary()|list()|integer()|atom()|float()) -> list().
+to_list(X) when is_list(X) -> X;
+to_list(X) when is_binary(X) -> binary_to_list(X);
+to_list(X) when is_integer(X) -> integer_to_list(X);
+to_list(X) when is_atom(X) -> atom_to_list(X);
+to_list(X) when is_float(X) -> float_to_list(X,[{decimals, 4}]).
 
 %% @doc universal converter to integer
 -spec to_int(binary()|list()|integer()|atom()) -> integer().
@@ -332,13 +332,6 @@ x_www_form_urlencoded(Qs) ->
 urldecode(Bin) when is_binary(Bin) ->
   urldecode(Bin, <<>>, crash).
 
-%% @doc Decode a URL encoded binary.
-%% The second argument specifies how to handle percent characters that are not
-%% followed by two valid hex characters. Use `skip' to ignore such errors,
-%% if `crash' is used the function will fail with the reason `badarg'.
--spec urldecode(binary(), crash | skip) -> binary().
-urldecode(Bin, OnError) when is_binary(Bin) ->
-  urldecode(Bin, <<>>, OnError).
 
 -spec urldecode(binary(), binary(), crash | skip) -> binary().
 urldecode(<<$%, H, L, Rest/binary>>, Acc, OnError) ->
@@ -372,7 +365,7 @@ hexstring(String) when is_list(String) ->
     lists:map(fun(X) -> io_lib:format("~2.16.0b", [X]) end, String));
 
 hexstring(Binary) when is_binary(Binary) ->
-  hexstring(to_str(Binary)).
+  hexstring(to_list(Binary)).
 
 
 gen_rand_id(Len) ->
