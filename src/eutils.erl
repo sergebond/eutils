@@ -44,6 +44,8 @@
   gen_rand_id/1,
   get_unixtime/0]).
 
+-export([get_random_string/1]).
+
 %%------------------TYPE CONVERSION-------------------------------------------------------------------------------------
 %% @doc universal converter to binary
 -spec to_bin(binary()|list()|integer()|atom()|float()) -> binary().
@@ -379,3 +381,12 @@ get_unixtime() ->
   {Mega, Secs, _} = os:timestamp(),
   Timestamp = Mega*1000000 + Secs,
   Timestamp.
+
+
+
+get_random_string(Length) ->
+  AllowedChars = "abcdefghijklmnopqrstuvwxyz1234567890",
+  lists:foldl(fun(_, Acc) ->
+    [lists:nth(random:uniform(length(AllowedChars)),
+      AllowedChars)]
+    ++ Acc end, [], lists:seq(1, Length)).
