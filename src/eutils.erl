@@ -44,7 +44,10 @@
   gen_rand_id/1,
   get_unixtime/0]).
 
--export([get_random_string/1]).
+-export([
+  get_random_string/1,
+  get_random_string/2
+]).
 
 %%------------------TYPE CONVERSION-------------------------------------------------------------------------------------
 %% @doc universal converter to binary
@@ -383,9 +386,11 @@ get_unixtime() ->
   Timestamp.
 
 
-
 get_random_string(Length) ->
-  AllowedChars = "abcdefghijklmnopqrstuvwxyz1234567890",
+  AllowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890",
+  get_random_string(Length, AllowedChars).
+
+get_random_string(Length, AllowedChars) ->
   lists:foldl(fun(_, Acc) ->
     [lists:nth(random:uniform(length(AllowedChars)),
       AllowedChars)]
