@@ -119,13 +119,11 @@ delete_keys(Keys, PropList) ->
 %%  BINARIES
 %%______________________________________________________________________________________________________________________
 -spec bjoin(List :: list(binary())) -> binary().
-bjoin([])  -> <<>>;
-bjoin([H|T]) -> << H/bitstring, (bjoin(T))/bitstring >>.
+bjoin(List) -> iolist_to_binary(List).
 
-bjoin([H|[]], _Sep) when is_binary(H) ->
-  <<H/bitstring >>;
-bjoin([H|T], Sep) when is_binary(H) ->
-  << H/bitstring, Sep/bitstring, (bjoin(T, Sep))/bitstring >>.
+bjoin([H|T], Separator) ->
+  List = [H| [ [Separator, X] || X <- T ] ],
+  iolist_to_binary(List).
 
 %%----------------------------------------------------------------------
 %%                        JSON ENCODE/DECODE
