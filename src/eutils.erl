@@ -15,7 +15,10 @@
 %% MISC
 -export([
   get_value/2,
-  get_value/3
+  get_value/3,
+  set_value/3,
+  delete_key/2,
+  delete_keys/2
 ]).
 
 %% BINARIES
@@ -100,6 +103,18 @@ get_value(Key, List, Default)->
     {_, Val} -> Val;
     _        -> Default
   end.
+
+set_value(Key, Value, PropList) ->
+  lists:keystore(Key, 1, PropList, {Key, Value}).
+
+delete_key(Key, PropList) ->
+  lists:keydelete(Key, 1, PropList).
+
+delete_keys(Keys, PropList) ->
+  lists:foldl(
+    fun(Key, List) ->
+        lists:keydelete(Key, 1, List)
+    end, PropList, Keys).
 
 %%  BINARIES
 %%______________________________________________________________________________________________________________________
