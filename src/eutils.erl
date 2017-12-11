@@ -121,6 +121,7 @@ delete_keys(Keys, PropList) ->
 -spec bjoin(List :: list(binary())) -> binary().
 bjoin(List) -> iolist_to_binary(List).
 
+bjoin([], _) -> <<>>;
 bjoin([H|T], Separator) ->
   List = [H| [ [Separator, X] || X <- T ] ],
   iolist_to_binary(List).
