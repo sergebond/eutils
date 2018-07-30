@@ -9,7 +9,8 @@
   to_int/1,
   to_float/1,
   to_atom/1,
-  to_boolean/1
+  to_boolean/1,
+  to_lower/1
 ]).
 
 %% MISC
@@ -409,3 +410,55 @@ get_random_string(Length, AllowedChars) ->
     [lists:nth(random:uniform(length(AllowedChars)),
       AllowedChars)]
     ++ Acc end, [], lists:seq(1, Length)).
+
+to_lower(S) when is_binary(S) ->
+  unicode:characters_to_binary(
+    to_lower(
+      unicode:characters_to_list(S)
+    )
+  );
+to_lower(S) when is_list(S) ->
+  string:to_lower([char_to_lower(C) || C <- S]);
+to_lower(C) when is_integer(C) ->
+  char_to_lower(C).
+
+char_to_lower($А) -> $а;
+char_to_lower($Б) -> $б;
+char_to_lower($В) -> $в;
+char_to_lower($Г) -> $г;
+char_to_lower($Ґ) -> $ґ;
+char_to_lower($Д) -> $д;
+char_to_lower($Е) -> $е;
+char_to_lower($Є) -> $є;
+char_to_lower($Ж) -> $ж;
+char_to_lower($З) -> $з;
+char_to_lower($И) -> $и;
+char_to_lower($І) -> $і;
+char_to_lower($Ї) -> $ї;
+char_to_lower($Й) -> $й;
+char_to_lower($К) -> $к;
+char_to_lower($Л) -> $л;
+char_to_lower($М) -> $м;
+char_to_lower($Н) -> $н;
+char_to_lower($О) -> $о;
+char_to_lower($П) -> $п;
+char_to_lower($Р) -> $р;
+char_to_lower($С) -> $с;
+char_to_lower($Т) -> $т;
+char_to_lower($У) -> $у;
+char_to_lower($Ф) -> $ф;
+char_to_lower($Х) -> $х;
+char_to_lower($Ц) -> $ц;
+char_to_lower($Ч) -> $ч;
+char_to_lower($Ш) -> $ш;
+char_to_lower($Щ) -> $щ;
+char_to_lower($Ь) -> $ь;
+char_to_lower($Ю) -> $ю;
+char_to_lower($Я) -> $я;
+
+char_to_lower($Ё) -> $ё;
+char_to_lower($Ъ) -> $ъ;
+char_to_lower($Ы) -> $ы;
+char_to_lower($Э) -> $э;
+
+char_to_lower(Ch) -> Ch.
