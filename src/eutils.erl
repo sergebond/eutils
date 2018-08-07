@@ -7,6 +7,7 @@
   to_str/1,
   to_list/1,
   to_int/1,
+  to_int/2,
   to_float/1,
   to_atom/1,
   to_boolean/1,
@@ -79,6 +80,15 @@ to_int(X) when is_binary(X) -> binary_to_integer(X);
 to_int(X) when is_list(X) -> list_to_integer(X);
 to_int(X) when is_float(X) -> round(X);
 to_int(X) when is_atom(X) -> list_to_integer(atom_to_list(X)).
+
+-spec to_int(term(), term()) -> integer()|term().
+to_int(X, Default) ->
+  try
+    to_int(X)
+  catch
+    _:_ ->
+      Default
+  end.
 
 %% @doc universal converter to float
 -spec to_float(binary()|list()|float()) -> float().
