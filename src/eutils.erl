@@ -51,7 +51,8 @@
 
 -export([
   get_random_string/1,
-  get_random_string/2
+  get_random_string/2,
+  pick_random/1
 ]).
 
 %%------------------TYPE CONVERSION-------------------------------------------------------------------------------------
@@ -401,9 +402,6 @@ hexstring(Binary) when is_binary(Binary) ->
   hexstring(to_list(Binary)).
 
 
-gen_rand_id(Len) ->
-  base64:encode( crypto:strong_rand_bytes(Len) ).
-
 -spec get_unixtime() -> integer().
 get_unixtime() ->
   {Mega, Secs, _} = os:timestamp(),
@@ -411,15 +409,22 @@ get_unixtime() ->
   Timestamp.
 
 
+%% RANDOM ______________________________________________________________________________________________________________
+gen_rand_id(Len) ->
+  base64:encode( crypto:strong_rand_bytes(Len) ).
+
 get_random_string(Length) ->
   AllowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890",
   get_random_string(Length, AllowedChars).
 
 get_random_string(Length, AllowedChars) ->
   lists:foldl(fun(_, Acc) ->
-    [lists:nth(random:uniform(length(AllowedChars)),
-      AllowedChars)]
-    ++ Acc end, [], lists:seq(1, Length)).
+    [pick_random(AllowedChars) | Acc] end, [], lists:seq(1, Length)).
+
+pick_random(List) when is_list(List) ->
+  lists:nth(rand:uniform(length(List)), List).
+
+%% STRING_______________________________________________________________________________________________________________
 
 to_lower(S) when is_binary(S) ->
   unicode:characters_to_binary(
