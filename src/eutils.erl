@@ -52,7 +52,8 @@
 -export([
   get_random_string/1,
   get_random_string/2,
-  pick_random/1
+  pick_random/1,
+  randint/2
 ]).
 
 %%------------------TYPE CONVERSION-------------------------------------------------------------------------------------
@@ -423,6 +424,9 @@ get_random_string(Length, AllowedChars) ->
 
 pick_random(List) when is_list(List) ->
   lists:nth(rand:uniform(length(List)), List).
+
+randint(A, B) -> %% Get random int beetween
+  rand:uniform(B - A) + A.
 
 %% STRING_______________________________________________________________________________________________________________
 
