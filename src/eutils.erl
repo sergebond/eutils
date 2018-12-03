@@ -100,6 +100,7 @@ to_float(X) when is_list(X) -> list_to_float(X).
 
 %% @doc universal converter to atom
 -spec to_atom(binary()|list()|float()) -> float().
+to_atom(X) when is_atom(X) -> X;
 to_atom(X) when is_binary(X) -> binary_to_atom(X, utf8);
 to_atom(X) when is_list(X) -> binary_to_atom(list_to_binary(X), utf8).
 
