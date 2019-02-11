@@ -47,7 +47,9 @@
 
 -export([
   gen_rand_id/1,
-  get_unixtime/0]).
+  get_unixtime/0,
+  get_timestamp_in_millisec/0
+]).
 
 -export([
   get_random_string/1,
@@ -410,6 +412,10 @@ get_unixtime() ->
   Timestamp = Mega*1000000 + Secs,
   Timestamp.
 
+-spec get_timestamp_in_millisec() -> integer().
+get_timestamp_in_millisec() ->
+  {Mega, Sec, Micro} = os:timestamp(),
+  (Mega*1000000 + Sec)*1000 + round(Micro/1000).
 
 %% RANDOM ______________________________________________________________________________________________________________
 gen_rand_id(Len) ->
