@@ -21,6 +21,10 @@ test: compile
 clean:
 	@$(REBAR) clean
 
+run:
+	@$(REBAR) compile
+	erl -pa ./ebin -pa ./deps/*/ebin -s eutils_app
+
 get-deps:
 	@$(REBAR) get-deps
 

@@ -3,8 +3,13 @@
 
 -behaviour(application).
 
+-export([start/0]).
+
 -export([start/2,
   stop/1]).
+
+start() ->
+  application:start(eutils).
 
 start(_StartType, _StartArgs) ->
   case erandom:start_link() of
