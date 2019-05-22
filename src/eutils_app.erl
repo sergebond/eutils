@@ -9,7 +9,7 @@
   stop/1]).
 
 start() ->
-  application:start(eutils).
+  application:ensure_all_started(eutils).
 
 start(_StartType, _StartArgs) ->
   case erandom:start_link() of
