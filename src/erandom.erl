@@ -5,7 +5,11 @@
 -behaviour (supervisor).
 -export ([init/1]).
 
--export ([gen_objectid/0, next_requestid/0]). % API
+-export ([
+          gen_objectid/0,
+          get_requestid/0,
+          next_requestid/0
+         ]). % API
 
 -type unixtime() :: {integer(), integer(), integer()}. % {MegaSecs, Secs, MicroSecs}
 -type unixsecs() :: integer(). % Unix Time in seconds
@@ -28,6 +32,13 @@ init ([]) ->
 -spec next_requestid () -> mongo_protocol:requestid(). % IO
 %@doc Fresh request id
 next_requestid() -> ets:update_counter (?MODULE, requestid_counter, 1).
+
+-spec(get_requestid() -> integer()).
+get_requestid() ->
+  case ets:lookup(?MODULE, requestid_counter) of
+    [{requestid_counter,Counter}] -> Counter;
+    _                             -> 0
+  end.
 
 -spec gen_objectid () -> binary(). % IO
 %@doc Fresh object id
