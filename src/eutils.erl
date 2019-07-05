@@ -38,6 +38,7 @@
 
 %% HTTP
 -export([
+  compose_body_encode/1,
   urlencode/1,
   join_form/1,
   x_www_form_urlencoded/1
@@ -240,6 +241,15 @@ jiffy_decode_param(Val)->
 
 %%  HTTP_UTILS
 %%______________________________________________________________________________________________________________________
+
+compose_body_encode(Args) ->
+  lists:concat(
+    lists:foldl(
+      fun(Rec, []) -> [Rec]; (Rec, Ac) -> [Rec, "&" | Ac] end,
+      [],
+      [eutils:to_str(K) ++ "=" ++ http_uri:encode(eutils:to_str(V)) || {K, V} <- Args]
+    )
+  ).
 
 join_form(Form) ->
   UrlPars  = [ << (urlencode(to_bin(K)))/binary, <<"=">>/binary, (urlencode(to_bin(V)))/binary >>||{K,V} <- Form ],
