@@ -20,7 +20,8 @@
   get_value/3,
   set_value/3,
   delete_key/2,
-  delete_keys/2
+  delete_keys/2,
+  keyfilter/2
 ]).
 
 %% BINARIES
@@ -145,6 +146,9 @@ delete_keys(Keys, PropList) ->
     fun(Key, List) ->
         lists:keydelete(Key, 1, List)
     end, PropList, Keys).
+
+keyfilter(Keys, Proplist) ->
+  lists:filter(fun({Key, _}) -> lists:member(Key, Keys) end, Proplist).
 
 %%  BINARIES
 %%______________________________________________________________________________________________________________________
