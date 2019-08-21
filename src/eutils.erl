@@ -64,6 +64,12 @@
   get_node_id/2
 ]).
 
+%%PHASH
+-export([
+  phash3/2
+]).
+
+
 %%------------------TYPE CONVERSION-------------------------------------------------------------------------------------
 %% @doc universal converter to binary
 -spec to_bin(binary()|list()|integer()|atom()|float()) -> binary().
@@ -461,6 +467,46 @@ pick_random(List) when is_list(List) ->
 
 randint(A, B) -> %% Get random int beetween
   rand:uniform(B - A) + A.
+
+
+%% PHASH
+%%______________________________________________________________________________________________________________________
+-spec(phash3(term(), integer()) -> integer()).
+phash3(Term, Range) ->
+  Interval = trunc(math:pow(2, 160) - 1) div Range,
+  <<Hash:160/integer>> = crypto:hash(sha, eutils:to_bin(Term)),
+  Points = [{X * Interval, X} || X <- lists:seq(0, Range - 1)],
+
+  {Min, Max} =
+    lists:foldl(
+      fun({C, I}, {L, U}) ->
+          case C =< Hash of
+            true ->
+              case C > L of
+                true ->
+                  {I, U};
+                false ->
+                  {L, U}
+              end;
+            false ->
+              case C > U of
+                true ->
+                  {L, I};
+                false ->
+                  {L, U}
+              end
+          end
+      end,
+      {-1, -1},
+      Points
+     ),
+  case Min of
+    -1 ->
+      Max;
+    _ ->
+      Min
+  end.
+
 
 %% STRING_______________________________________________________________________________________________________________
 
