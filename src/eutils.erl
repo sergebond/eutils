@@ -128,7 +128,7 @@ get_node_id(ApplicationName, Key) ->
     %% So if we have for example application capi we will try to get application:get_env(capi, api_id)
     %% And if there is empty value try to get current node and return this name
     if Val =:= <<>> -> re:replace(atom_to_list(node()), "@", "-", [{return, binary}]);
-        true -> Val
+        true -> to_bin(Val)
     end.
 
 %%  MISC
