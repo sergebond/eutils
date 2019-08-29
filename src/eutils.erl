@@ -123,7 +123,7 @@ to_boolean(X) when X =:= true orelse X =:= false ->  X;
 to_boolean(X) when  X =:= "true" orelse X =:= "false" -> binary_to_atom(list_to_binary(X), utf8).
 
 get_node_id(ApplicationName, Key) ->
-    {ok, Val} = application:get_env(ApplicationName, Key),
+    Val = application:get_env(ApplicationName, Key, <<>>),
     %% there is no way in kubernetess getting uniq id
     %% So if we have for example application capi we will try to get application:get_env(capi, api_id)
     %% And if there is empty value try to get current node and return this name
